@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ideas     Idea[]
+
+  @@map("users")
+}
+
+model Idea {
+  id          String   @id @default(cuid())
+  title       String   @unique
+  description String
+  problem     String?
+  solution    String?
+  targetMarket String?
+  revenueModel String?
+  status      String   @default("draft")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analyses    Analysis[]
+  keywords    Keyword[]
+  communitySignals CommunitySignal[]
+
+  @@map("ideas")
+}
+
+model Analysis {
+  id                String   @id @default(cuid())
+  ideaId            String
+  opportunityScore  Int
+  problemScore      Int
+  feasibilityScore  Int
+  timingScore       Int
+  revenueRange      String?
+  executionDifficulty Int?
+  marketSize        BigInt?
+  competitionLevel  String?
+  analysisData      Json
+  createdAt         DateTime @default(now())
+  idea              Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+
+  @@map("analyses")
+}
+
+model Keyword {
+  id            String   @id @default(cuid())
+  ideaId        String
+  keyword       String
+  searchVolume  Int?
+  competition   String?
+  growthRate    Float?
+  trendData     Json?
+  createdAt     DateTime @default(now())
+  idea          Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+
+  @@unique([ideaId, keyword])
+  @@map("keywords")
+}
+
+model CommunitySignal {
+  id              String   @id @default(cuid())
+  ideaId          String
+  platform        String
+  communityName   String
+  memberCount     Int?
+  engagementScore Int?
+  signalStrength  Int?
+  sourceUrl       String?
+  createdAt       DateTime @default(now())
+  idea            Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+
+  @@unique([ideaId, platform, communityName])
+  @@map("community_signals")
+}
