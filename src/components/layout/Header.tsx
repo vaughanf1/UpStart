@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Lightbulb, Plus, Search, Menu, X } from 'lucide-react';
 
 interface HeaderProps {
-  onCreateIdea: () => void;
+  onCreateIdea?: () => void;
 }
 
 export default function Header({ onCreateIdea }: HeaderProps) {
