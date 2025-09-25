@@ -6,7 +6,7 @@ import IdeaGrid from '@/components/ideas/IdeaGrid';
 import CreateIdeaModal from '@/components/ideas/CreateIdeaModal';
 
 export default function HomePage() {
-  const [ideas, setIdeas] = useState([]);
+  const [ideas, setIdeas] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,7 +27,7 @@ export default function HomePage() {
     setIsModalOpen(true);
   };
 
-  const handleIdeaCreated = (newIdea) => {
+  const handleIdeaCreated = (newIdea: any) => {
     setIdeas(prev => [newIdea, ...prev]);
     setIsModalOpen(false);
   };
@@ -55,11 +55,12 @@ export default function HomePage() {
         )}
       </main>
 
-      <CreateIdeaModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onIdeaCreated={handleIdeaCreated}
-      />
+      {isModalOpen && (
+        <CreateIdeaModal
+          onClose={() => setIsModalOpen(false)}
+          onIdeaCreated={handleIdeaCreated}
+        />
+      )}
     </div>
   );
 }

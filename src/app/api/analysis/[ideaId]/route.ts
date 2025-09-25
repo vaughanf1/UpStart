@@ -46,13 +46,13 @@ export async function POST(
 
     // Prepare data for Claude analysis
     const additionalData = {
-      searchData: idea.keywords.map(k => ({
+      searchData: idea.keywords.map((k: any) => ({
         keyword: k.keyword,
         searchVolume: k.searchVolume,
         competition: k.competition,
         growthRate: k.growthRate,
       })),
-      communityData: idea.communitySignals.map(cs => ({
+      communityData: idea.communitySignals.map((cs: any) => ({
         platform: cs.platform,
         communityName: cs.communityName,
         memberCount: cs.memberCount,

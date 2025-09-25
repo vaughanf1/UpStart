@@ -85,7 +85,7 @@ class ClaudeService {
         ]
       });
 
-      const analysisText = response.content[0].text;
+      const analysisText = (response.content[0] as any).text;
       return this.parseAnalysisResponse(analysisText);
     } catch (error) {
       console.error('Claude API Error:', error);
@@ -242,7 +242,7 @@ Please respond with valid JSON only, following the exact schema above.`;
         messages: [{ role: 'user', content: prompt }]
       });
 
-      const keywordsText = response.content[0].text;
+      const keywordsText = (response.content[0] as any).text;
       const jsonMatch = keywordsText.match(/\[[\s\S]*\]/);
       return jsonMatch ? JSON.parse(jsonMatch[0]) : [];
     } catch (error) {

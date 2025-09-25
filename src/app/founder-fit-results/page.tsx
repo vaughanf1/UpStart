@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import { Star, Clock, DollarSign, Target, Users, CheckCircle, ArrowRight } from 'lucide-react';
@@ -18,7 +18,7 @@ interface PersonalizedIdea {
   estimatedARR: string;
 }
 
-export default function FounderFitResults() {
+function FounderFitResultsContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('sessionId');
   const [ideas, setIdeas] = useState<PersonalizedIdea[]>([]);
@@ -280,5 +280,13 @@ export default function FounderFitResults() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function FounderFitResults() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FounderFitResultsContent />
+    </Suspense>
   );
 }
